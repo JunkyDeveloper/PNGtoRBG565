@@ -13,16 +13,12 @@ if (args.Length < 2)
 {
     Console.WriteLine("array name missing!");
 }
+#pragma warning disable CA1416
 
 Bitmap image = (Bitmap)Image.FromFile(args[0]);
 string array = "#include \"stm32l4xx_hal.h\" \n\n uint8_t " + args[1] + "[] = \n{\n";
-var ipixel = image.GetPixel(0, 0);
-if (ipixel.B > 0 && ipixel.R > 0 && ipixel.R > 0)
-    array += "0xff,0xff";
-else
-{
-    array += "0x00,0x00";
-}
+var color = GeneratePixel(image.GetPixel(0, 0));
+array += " 0x" + color[0].ToString("x2") + ",0x" + color[1].ToString("x2");
 
 for (int j = 0; j < image.Height; j++)
 {
@@ -30,14 +26,8 @@ for (int j = 0; j < image.Height; j++)
     {
         if (i == 0 && j == 0)
             continue;
-        ipixel = image.GetPixel(i, j);
-        if (ipixel.B > 0 && ipixel.R > 0 && ipixel.R > 0)
-            //array += "0x" + image.GetPixel(i, j).A.ToString("x2") + ",0x" + image.GetPixel(i, j).R.ToString("x2") + ",0x" + image.GetPixel(i, j).G.ToString("x2") + ",0x" + image.GetPixel(i, j).B.ToString("x2") + ",";
-            array += ",0xff,0xff";
-        else
-        {
-            array += ",0x00,0x00";
-        }
+        color = GeneratePixel(image.GetPixel(i, j));
+        array += ",0x" + color[0].ToString("x2") + ",0x" + color[1].ToString("x2");
     }
 
     array += '\n';
@@ -49,8 +39,10 @@ File.WriteAllText(args[1] + ".h", array);
 
 Console.WriteLine("Converting worked!");
 
+#pragma warning restore CA1416
 
-byte[] generatePixel(Color color)
+
+byte[] GeneratePixel(Color color)
 {
     short c = 0;
     byte r = (byte)(color.R >> 3);
