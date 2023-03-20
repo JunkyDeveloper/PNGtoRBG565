@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PNGtoBMPArray", "PNGtoBMPArray\PNGtoBMPArray.csproj", "{F8428960-9E10-4EE4-BBF8-C8AE6162FF06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PNGtoRBG585", "PNGtoRBG585\PNGtoRBG585.csproj", "{F8428960-9E10-4EE4-BBF8-C8AE6162FF06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
