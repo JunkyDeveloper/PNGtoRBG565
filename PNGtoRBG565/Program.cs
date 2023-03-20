@@ -23,12 +23,13 @@ else
 {
     array += "0x00,0x00";
 }
+
 for (int j = 0; j < image.Height; j++)
 {
     for (int i = 0; i < image.Width; i++)
     {
         if (i == 0 && j == 0)
-        continue;
+            continue;
         ipixel = image.GetPixel(i, j);
         if (ipixel.B > 0 && ipixel.R > 0 && ipixel.R > 0)
             //array += "0x" + image.GetPixel(i, j).A.ToString("x2") + ",0x" + image.GetPixel(i, j).R.ToString("x2") + ",0x" + image.GetPixel(i, j).G.ToString("x2") + ",0x" + image.GetPixel(i, j).B.ToString("x2") + ",";
@@ -47,3 +48,16 @@ array += "\n\n};";
 File.WriteAllText(args[1] + ".h", array);
 
 Console.WriteLine("Converting worked!");
+
+
+byte[] generatePixel(Color color)
+{
+    short c = 0;
+    byte r = (byte)(color.R >> 3);
+    byte g = (byte)(color.G >> 2);
+    byte b = (byte)(color.B >> 3);
+    byte[] pixel = new byte[2];
+    pixel[0] = (byte)((r << 3) + (g >> 3));
+    pixel[1] = (byte)((g << 5) + (b));
+    return pixel;
+}
