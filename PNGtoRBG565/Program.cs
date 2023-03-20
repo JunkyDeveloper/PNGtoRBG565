@@ -16,26 +16,29 @@ if (args.Length < 2)
 #pragma warning disable CA1416
 
 Bitmap image = (Bitmap)Image.FromFile(args[0]);
-string array = "#include \"stm32l4xx_hal.h\" \n\n uint8_t " + args[1] + "[] = \n{\n";
+string line = "#include \"stm32l4xx_hal.h\" \n\n uint8_t " + args[1] + "[] = \n{\n";
 var color = GeneratePixel(image.GetPixel(0, 0));
-array += " 0x" + color[0].ToString("x2") + ",0x" + color[1].ToString("x2");
-
+File.WriteAllText(args[1] + ".h", line);
+line = " 0x" + color[0].ToString("x2") + ",0x" + color[1].ToString("x2");
+File.AppendAllTextAsync(args[1] + ".h",line);
 for (int j = 0; j < image.Height; j++)
 {
+    line = "";
     for (int i = 0; i < image.Width; i++)
     {
         if (i == 0 && j == 0)
             continue;
         color = GeneratePixel(image.GetPixel(i, j));
-        array += ",0x" + color[0].ToString("x2") + ",0x" + color[1].ToString("x2");
+        line += ",0x" + color[0].ToString("x2") + ",0x" + color[1].ToString("x2");
     }
 
-    array += '\n';
+    line += '\n';
+    File.AppendAllTextAsync(args[1] + ".h",line);
 }
 
-array += "\n\n};";
+line = "\n\n};";
 
-File.WriteAllText(args[1] + ".h", array);
+File.AppendAllText(args[1] + ".h", line);
 
 Console.WriteLine("Converting worked!");
 
