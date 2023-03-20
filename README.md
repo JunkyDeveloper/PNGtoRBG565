@@ -1,6 +1,6 @@
-# PNG to RBG585 Converter
+# PNG to RBG565 Converter
 
-This code was only quickly created to convert a png to the RBG585 for a stm controller.
+This code was only quickly created to convert a png to the RBG565 for a stm controller.
 
 # Usage
 ```
