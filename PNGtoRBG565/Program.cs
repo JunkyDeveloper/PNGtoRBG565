@@ -18,8 +18,7 @@ if (args.Length < 2)
 Bitmap image = (Bitmap)Image.FromFile(args[0]);
 string line = "#include \"stm32l4xx_hal.h\" \n\n uint8_t " + args[1] + "[] = \n{\n";
 var color = GeneratePixel(image.GetPixel(0, 0));
-File.WriteAllText(args[1] + ".h", line);
-line = " 0x" + color[0].ToString("x2") + ",0x" + color[1].ToString("x2");
+line += " 0x" + color[0].ToString("x2") + ",0x" + color[1].ToString("x2");
 File.AppendAllTextAsync(args[1] + ".h",line);
 for (int j = 0; j < image.Height; j++)
 {
@@ -33,21 +32,27 @@ for (int j = 0; j < image.Height; j++)
     }
 
     line += '\n';
+    if(j == image.Height-1)
+        line += "\n\n};";
     File.AppendAllTextAsync(args[1] + ".h",line);
 }
 
-line = "\n\n};";
+line = "";
+File.AppendAllTextAsync(args[1] + ".h", line);
 
-File.AppendAllText(args[1] + ".h", line);
-
+waitsomething();
 Console.WriteLine("Converting worked!");
 
 #pragma warning restore CA1416
 
+async void waitsomething()
+{
+    await Task.Delay(2000);
+}
+
 
 byte[] GeneratePixel(Color color)
 {
-    short c = 0;
     byte r = (byte)(color.R >> 3);
     byte g = (byte)(color.G >> 2);
     byte b = (byte)(color.B >> 3);
