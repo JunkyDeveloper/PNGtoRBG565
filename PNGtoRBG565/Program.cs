@@ -40,16 +40,9 @@ for (int j = 0; j < image.Height; j++)
 line = "";
 File.AppendAllTextAsync(args[1] + ".h", line);
 
-waitsomething();
 Console.WriteLine("Converting worked!");
 
 #pragma warning restore CA1416
-
-async void waitsomething()
-{
-    await Task.Delay(2000);
-}
-
 
 byte[] GeneratePixel(Color color)
 {
